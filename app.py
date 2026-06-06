@@ -72,23 +72,28 @@ if st.button("🔍 Predict", use_container_width=True):
     col2.metric("Age Confidence", f"{age_conf:.1f}%")
 
     # Feature importance chart
-    import matplotlib.pyplot as plt
-    feature_names = ['Physical Activity', 'BMI', 'Glucose', 'Diabetes',
-                     'Glucose Tolerance', 'Insulin', 'Arm Circ', 'Arm Length',
-                     'Height', 'Leg Length', 'Waist', 'Weight']
+    import plotly.graph_objects as go
 
-    st.markdown("### 📊 Feature Importance")
-    fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+st.markdown("### 📊 Feature Importance")
+feature_names = ['Physical Activity', 'BMI', 'Glucose', 'Diabetes',
+                 'Glucose Tolerance', 'Insulin', 'Arm Circ', 'Arm Length',
+                 'Height', 'Leg Length', 'Waist', 'Weight']
 
-    # Gender importance
-    axes[0].barh(feature_names, gender_model.feature_importances_, color='steelblue')
-    axes[0].set_title('Gender Model')
-    axes[0].set_xlabel('Importance')
+col1, col2 = st.columns(2)
+with col1:
+    fig1 = go.Figure(go.Bar(
+        x=gender_model.feature_importances_,
+        y=feature_names,
+        orientation='h',
+        marker_color='steelblue'))
+    fig1.update_layout(title='Gender Model', height=400)
+    st.plotly_chart(fig1, use_container_width=True)
 
-    # Age importance
-    axes[1].barh(feature_names, age_model.feature_importances_, color='coral')
-    axes[1].set_title('Age Group Model')
-    axes[1].set_xlabel('Importance')
-
-    plt.tight_layout()
-    st.pyplot(fig)
+with col2:
+    fig2 = go.Figure(go.Bar(
+        x=age_model.feature_importances_,
+        y=feature_names,
+        orientation='h',
+        marker_color='coral'))
+    fig2.update_layout(title='Age Group Model', height=400)
+    st.plotly_chart(fig2, use_container_width=True)

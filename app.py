@@ -6,6 +6,17 @@ import numpy as np
 gender_model = pickle.load(open('Models/gender_model.pkl', 'rb'))
 age_model = pickle.load(open('Models/age_model.pkl', 'rb'))
 scaler = pickle.load(open('Models/scaler.pkl', 'rb'))
+with st.sidebar:
+    st.markdown("## 📌 About This Project")
+    st.markdown("This app uses **Random Forest** models trained on real CDC NHANES health data to predict gender and age group.")
+    st.markdown("---")
+    st.markdown("**Dataset:** CDC NHANES Survey")
+    st.markdown("**Records:** 2,278 patients")
+    st.markdown("**Features:** 12 health measurements")
+    st.markdown("---")
+    st.markdown("**Built by:** Aayitijhya Ganguly")
+    st.markdown("[![GitHub](https://img.shields.io/badge/GitHub-black?logo=github)](https://github.com/aayitijhyaganguly-ai/Gender-age-classifier)")
+    st.markdown("[![Live App](https://img.shields.io/badge/Live%20App-red?logo=streamlit)](https://gender-age-classifier.streamlit.app)")
 
 st.title("🧬 Gender & Age Group Classifier")
 st.markdown("Fill in your health measurements to predict **Gender** and **Age Group**.")

@@ -1,23 +1,17 @@
 import streamlit as st
-import joblib
+import pickle
 import numpy as np
-import os
 
 # Load models
-BASE_DIR = os.path.dirname(os.path.abspath('app.py'))
+gender_model = pickle.load(open('Models/gender_model.pkl', 'rb'))
+age_model = pickle.load(open('Models/age_model.pkl', 'rb'))
+scaler = pickle.load(open('Models/scaler.pkl', 'rb'))
 
-gender_model = joblib.load(os.path.join(BASE_DIR, 'Models', 'gender_model.pkl'))
-age_model = joblib.load(os.path.join(BASE_DIR, 'Models', 'age_model.pkl'))
-scaler = joblib.load(os.path.join(BASE_DIR, 'Models', 'scaler.pkl'))
-
-st.set_page_config(page_title="Gender & Age Classifier", page_icon="🧬")
 st.title("🧬 Gender & Age Group Classifier")
-st.markdown("Fill in your health measurements below to predict **Gender** and **Age Group**.")
+st.markdown("Fill in your health measurements to predict **Gender** and **Age Group**.")
 st.divider()
 
-# Input form
 col1, col2 = st.columns(2)
-
 with col1:
     bmi = st.number_input("BMI", 10.0, 70.0, 25.0)
     glucose = st.number_input("Fasting Glucose (mg/dL)", 50.0, 400.0, 100.0)
@@ -35,20 +29,14 @@ with col2:
     weight = st.number_input("Weight (kg)", 20.0, 200.0, 70.0)
 
 st.divider()
-
 if st.button("🔍 Predict", use_container_width=True):
     input_data = np.array([[physical_activity, bmi, glucose, diabetes,
                             glucose_tol, insulin, arm_circ, arm_len,
                             height, leg_len, waist, weight]])
-
     input_scaled = scaler.transform(input_data)
-
     gender_pred = gender_model.predict(input_scaled)[0]
     age_pred = age_model.predict(input_scaled)[0]
-
-    gender_label = "Male 👨" if gender_pred == 1 else "Female 👩"
-    age_label = "Adult 🧑" if age_pred == 0 else "Senior 👴"
-
     col1, col2 = st.columns(2)
-    col1.success(f"**Gender:** {gender_label}")
-    col2.success(f"**Age Group:** {age_label}")
+    col1.success(f"**Gender:** {'Male 👨' if gender_pred == 1 else 'Female 👩'}")
+    col2.success(f"**Age Group:** {'Adult 🧑' if age_pred == 0 else 'Senior 👴'}")
+    

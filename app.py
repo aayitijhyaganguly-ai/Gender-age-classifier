@@ -71,29 +71,4 @@ if st.button("🔍 Predict", use_container_width=True):
     col1.metric("Gender Confidence", f"{gender_conf:.1f}%")
     col2.metric("Age Confidence", f"{age_conf:.1f}%")
 
-    # Feature importance chart
-    import plotly.graph_objects as go
-
-st.markdown("### 📊 Feature Importance")
-feature_names = ['Physical Activity', 'BMI', 'Glucose', 'Diabetes',
-                 'Glucose Tolerance', 'Insulin', 'Arm Circ', 'Arm Length',
-                 'Height', 'Leg Length', 'Waist', 'Weight']
-
-col1, col2 = st.columns(2)
-with col1:
-    fig1 = go.Figure(go.Bar(
-        x=gender_model.feature_importances_,
-        y=feature_names,
-        orientation='h',
-        marker_color='steelblue'))
-    fig1.update_layout(title='Gender Model', height=400)
-    st.plotly_chart(fig1, use_container_width=True)
-
-with col2:
-    fig2 = go.Figure(go.Bar(
-        x=age_model.feature_importances_,
-        y=feature_names,
-        orientation='h',
-        marker_color='coral'))
-    fig2.update_layout(title='Age Group Model', height=400)
-    st.plotly_chart(fig2, use_container_width=True)
+    

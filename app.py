@@ -41,7 +41,7 @@ with col2:
 st.markdown("### 📊 Model Performance")
 col1, col2 = st.columns(2)
 col1.metric("Gender Model Accuracy", "86.4%", "Random Forest")
-col2.metric("Age Group Model Accuracy", "84.4%", "Random Forest + SMOTE")
+col2.metric("Age Group Model Accuracy", "63.8%", "Random Forest + SMOTE")
 st.divider()
 if st.button("🔍 Predict", use_container_width=True):
     input_data = np.array([[physical_activity, bmi, glucose, diabetes,
@@ -57,8 +57,8 @@ if st.button("🔍 Predict", use_container_width=True):
     gender_conf = gender_model.predict_proba(input_scaled)[0].max() * 100
     age_conf = age_model.predict_proba(input_scaled)[0].max() * 100
 
-    gender_label = "Male" if gender_pred == 1 else "Female"
-    age_label = "Adult" if age_pred == 0 else "Senior"
+     age_labels = {0: "Adult ", 1: "Senior ", 2: "Teen "}
+age_label = age_labels[age_pred]
 
     # Results
     st.markdown("### 🎯 Prediction Results")

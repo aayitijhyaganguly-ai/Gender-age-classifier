@@ -37,9 +37,47 @@ if st.button("🔍 Predict", use_container_width=True):
                             glucose_tol, insulin, arm_circ, arm_len,
                             height, leg_len, waist, weight]])
     input_scaled = scaler.transform(input_data)
+
+    # Predictions
     gender_pred = gender_model.predict(input_scaled)[0]
     age_pred = age_model.predict(input_scaled)[0]
+
+    # Confidence scores
+    gender_conf = gender_model.predict_proba(input_scaled)[0].max() * 100
+    age_conf = age_model.predict_proba(input_scaled)[0].max() * 100
+
+    gender_label = "Male 👨" if gender_pred == 1 else "Female 👩"
+    age_label = "Adult 🧑" if age_pred == 0 else "Senior 👴"
+
+    # Results
+    st.markdown("### 🎯 Prediction Results")
     col1, col2 = st.columns(2)
-    col1.success(f"**Gender:** {'Male 👨' if gender_pred == 1 else 'Female 👩'}")
-    col2.success(f"**Age Group:** {'Adult 🧑' if age_pred == 0 else 'Senior 👴'}")
-    
+    col1.success(f"**Gender:** {gender_label}")
+    col2.success(f"**Age Group:** {age_label}")
+
+    # Confidence scores
+    col1, col2 = st.columns(2)
+    col1.metric("Gender Confidence", f"{gender_conf:.1f}%")
+    col2.metric("Age Confidence", f"{age_conf:.1f}%")
+
+    # Feature importance chart
+    import matplotlib.pyplot as plt
+    feature_names = ['Physical Activity', 'BMI', 'Glucose', 'Diabetes',
+                     'Glucose Tolerance', 'Insulin', 'Arm Circ', 'Arm Length',
+                     'Height', 'Leg Length', 'Waist', 'Weight']
+
+    st.markdown("### 📊 Feature Importance")
+    fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+
+    # Gender importance
+    axes[0].barh(feature_names, gender_model.feature_importances_, color='steelblue')
+    axes[0].set_title('Gender Model')
+    axes[0].set_xlabel('Importance')
+
+    # Age importance
+    axes[1].barh(feature_names, age_model.feature_importances_, color='coral')
+    axes[1].set_title('Age Group Model')
+    axes[1].set_xlabel('Importance')
+
+    plt.tight_layout()
+    st.pyplot(fig)

@@ -56,10 +56,10 @@ if st.button("🔍 Predict", use_container_width=True):
     # Confidence scores
     gender_conf = gender_model.predict_proba(input_scaled)[0].max() * 100
     age_conf = age_model.predict_proba(input_scaled)[0].max() * 100
-    gender_labels = {1: "Male 👨", 2: "Female 👩"}
-    age_labels = {0: "Adult 🧑", 1: "Senior 👴", 2: "Teen 🧒"}
-    gender_label = gender_labels.get(gender_pred, "Female 👩")
-    age_label = age_labels.get(age_pred, "Adult 🧑")
+    gender_labels = {1: "Male", 2: "Female"}
+    age_labels = {0: "Adult", 1: "Senior", 2: "Teen"}
+    gender_label = gender_labels.get(gender_pred, "Female")
+    age_label = age_labels.get(age_pred, "Adult")
  # Results
     st.markdown("### 🎯 Prediction Results")
     col1, col2 = st.columns(2)

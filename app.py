@@ -27,7 +27,10 @@ with col2:
     leg_len = st.number_input("Leg Length (cm)", 20.0, 60.0, 38.0)
     waist = st.number_input("Waist Circumference (cm)", 40.0, 200.0, 85.0)
     weight = st.number_input("Weight (kg)", 20.0, 200.0, 70.0)
-
+st.markdown("### 📊 Model Performance")
+col1, col2 = st.columns(2)
+col1.metric("Gender Model Accuracy", "86.4%", "Random Forest")
+col2.metric("Age Group Model Accuracy", "84.4%", "Random Forest + SMOTE")
 st.divider()
 if st.button("🔍 Predict", use_container_width=True):
     input_data = np.array([[physical_activity, bmi, glucose, diabetes,
